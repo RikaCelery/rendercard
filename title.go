@@ -8,18 +8,22 @@ import (
 
 // DrawTitle 绘制标题
 func (t *Title) DrawTitle() (imgs image.Image, err error) {
+	width := DefaultWidth
+	if t.Width != 0.0 {
+		width = t.Width
+	}
 	// 创建图像
-	canvas := gg.NewContext(int(DefaultWidth), 30+30+300+(t.Line*(256+30)))
+	canvas := gg.NewContext(int(width), 30+30+300+(t.Line*(256+30)))
 	canvas.SetRGBA255(245, 245, 245, 255)
 	canvas.Clear()
 
 	// 标题背景1
-	canvas.DrawRectangle(0, 30, DefaultWidth, 300)
+	canvas.DrawRectangle(0, 30, width, 300)
 	canvas.SetRGBA255(0, 0, 0, 153)
 	canvas.Fill()
 
 	// 标题背景2
-	canvas.DrawRectangle(0, 30+40, DefaultWidth, 220)
+	canvas.DrawRectangle(0, 30+40, width, 220)
 	canvas.SetRGBA255(0, 0, 0, 153)
 	canvas.Fill()
 
@@ -51,16 +55,16 @@ func (t *Title) DrawTitle() (imgs image.Image, err error) {
 		return
 	}
 	sc := 220 / float64(icon.Bounds().Dy())
-	canvas.ScaleAbout(sc, sc, DefaultWidth-float64(icon.Bounds().Dx())*sc/2, 40+30+220/2)
-	canvas.DrawImageAnchored(icon, int(DefaultWidth)-int(float64(icon.Bounds().Dx())*sc/2), 40+30+220/2, 0.5, 0.5)
+	canvas.ScaleAbout(sc, sc, width-float64(icon.Bounds().Dx())*sc/2, 40+30+220/2)
+	canvas.DrawImageAnchored(icon, int(width)-int(float64(icon.Bounds().Dx())*sc/2), 40+30+220/2, 0.5, 0.5)
 	canvas.Identity()
 	// 加载size为72的字体
 	err = canvas.ParseFontFace(t.TextFontData, fontsize2)
 	if err != nil {
 		return
 	}
-	canvas.DrawStringAnchored(t.RightTitle, DefaultWidth-float64(icon.Bounds().Dx())*sc-25+t.OffsetX, 30+40+(220-fontsize2*2)/3+fontsize2/2+t.OffsetY, 1, 0.5)
-	canvas.DrawStringAnchored(t.RightSubtitle, DefaultWidth-float64(icon.Bounds().Dx())*sc-25+t.OffsetX, 30+40+(220-fontsize2*2)/3*2+fontsize2+fontsize2/2+t.OffsetY, 1, 0.5)
+	canvas.DrawStringAnchored(t.RightTitle, width-float64(icon.Bounds().Dx())*sc-25+t.OffsetX, 30+40+(220-fontsize2*2)/3+fontsize2/2+t.OffsetY, 1, 0.5)
+	canvas.DrawStringAnchored(t.RightSubtitle, width-float64(icon.Bounds().Dx())*sc-25+t.OffsetX, 30+40+(220-fontsize2*2)/3*2+fontsize2+fontsize2/2+t.OffsetY, 1, 0.5)
 
 	imgs = canvas.Image()
 	return
@@ -75,7 +79,11 @@ func (t *Title) DrawTitleWithText(info []string) (imgs image.Image, err error) {
 	imgh := line*(28+20) + 220 + 50
 
 	// 创建图像
-	canvas := gg.NewContext(int(DefaultWidth), imgh)
+	width := DefaultWidth
+	if t.Width != 0.0 {
+		width = t.Width
+	}
+	canvas := gg.NewContext(int(width), imgh)
 	canvas.SetRGBA255(250, 250, 250, 255)
 	canvas.Clear()
 
@@ -87,9 +95,9 @@ func (t *Title) DrawTitleWithText(info []string) (imgs image.Image, err error) {
 	}
 	sc := 0.0
 	if float64(icon.Bounds().Dy())/float64(icon.Bounds().Dx()) >= 1 {
-		sc = DefaultWidth / 2 / float64(icon.Bounds().Dy())
+		sc = width / 2 / float64(icon.Bounds().Dy())
 	} else {
-		sc = DefaultWidth / 2 / float64(icon.Bounds().Dx())
+		sc = width / 2 / float64(icon.Bounds().Dx())
 	}
 	canvas.ScaleAbout(sc, sc, float64(canvas.W()), float64(canvas.H()))
 	canvas.DrawImageAnchored(icon, canvas.W(), canvas.H(), 1, 1)
@@ -133,8 +141,8 @@ func (t *Title) DrawTitleWithText(info []string) (imgs image.Image, err error) {
 		return
 	}
 
-	canvas.DrawStringAnchored(t.RightTitle, DefaultWidth-40+t.OffsetX, 40+fsp2/2+t.OffsetY, 1, 0.5)
-	canvas.DrawStringAnchored(t.RightSubtitle, DefaultWidth-40+t.OffsetX, 40+fsp2+25+fsp2/2+t.OffsetY, 1, 0.5)
+	canvas.DrawStringAnchored(t.RightTitle, width-40+t.OffsetX, 40+fsp2/2+t.OffsetY, 1, 0.5)
+	canvas.DrawStringAnchored(t.RightSubtitle, width-40+t.OffsetX, 40+fsp2+25+fsp2/2+t.OffsetY, 1, 0.5)
 
 	// 加载size为38的字体
 	err = canvas.ParseFontFace(t.TextFontData, 38+t.TextFontOffsetPoint)

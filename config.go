@@ -38,6 +38,7 @@ type Title struct {
 	TitleFontOffsetPoint float64
 	// TextFontOffsetPoint 正文字体大小偏移
 	TextFontOffsetPoint float64
+	Width               float64
 }
 
 // Sum64 struct 的摘要
