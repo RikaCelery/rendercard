@@ -15,6 +15,7 @@ type PluginInfo struct {
 	Brief          string
 	Status         bool
 	DisableDefault bool
+	DisableGlobal  bool
 }
 
 // RenderServerPic ...
@@ -141,6 +142,12 @@ func renderinfocards(torussd, glowsd []byte, plugininfos []*PluginInfo) (img ima
 		}
 		canvas.DrawRoundedRectangle(beginw-12, beginh+16, 10, cardh-16*2, 5)
 		canvas.Fill()
+
+		if plugininfos[i].DisableGlobal {
+			canvas.SetRGBA255(204, 51, 51, 128)
+			canvas.DrawRoundedRectangle(beginw-12, beginh+canvas.FontHeight()+6, cardw+12, 5, 2.5)
+			canvas.Fill()
+		}
 
 		canvas.SetRGBA255(204, 51, 51, 255)
 		if plugininfos[i].Status {
