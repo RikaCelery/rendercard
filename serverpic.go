@@ -11,9 +11,10 @@ import (
 
 // PluginInfo ...
 type PluginInfo struct {
-	Name   string
-	Brief  string
-	Status bool
+	Name           string
+	Brief          string
+	Status         bool
+	DisableDefault bool
 }
 
 // RenderServerPic ...
@@ -134,6 +135,13 @@ func renderinfocards(torussd, glowsd []byte, plugininfos []*PluginInfo) (img ima
 	canvas := gg.NewContext(w, h)
 	beginw, beginh := 24.0, 0.0
 	for i := 0; i < cardnum; i++ {
+		canvas.SetRGBA255(51, 178, 51, 128)
+		if plugininfos[i].DisableDefault {
+			canvas.SetRGBA255(178, 51, 51, 128)
+		}
+		canvas.DrawRoundedRectangle(beginw-12, beginh+16, 10, cardh-16*2, 5)
+		canvas.Fill()
+
 		canvas.SetRGBA255(204, 51, 51, 255)
 		if plugininfos[i].Status {
 			canvas.SetRGBA255(136, 178, 0, 255)
